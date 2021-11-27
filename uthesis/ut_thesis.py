@@ -37,8 +37,12 @@ def fetch_all_pages(url, max_tries=10):
             image = Image.open(io.BytesIO(page_data.content))
             all_pages.append(image)
             error_counter = 0
+            print(url)
+            print(f"Page {len(all_pages)} is done")
         else:
             error_counter += 1
+            print(url)
+            print(f"Retrying page {len(all_pages)} ...")
         url = find_next_url(url)
         time.sleep(10)
 
