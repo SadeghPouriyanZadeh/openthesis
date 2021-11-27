@@ -27,7 +27,7 @@ def find_next_url(url):
     return next_url
 
 
-def fetch_all_pages(url, max_tries=10, sleep_time=10):
+def fetch_all_pages(url, max_tries=10, random_sleep_time=True, custom_sleep_time=10):
     all_pages = []
     error_counter = 0
 
@@ -45,7 +45,10 @@ def fetch_all_pages(url, max_tries=10, sleep_time=10):
             print(url)
             print(f"Retrying page {len(all_pages)} ...")
 
-        time.sleep(sleep_time)
+        if random_sleep_time:
+            time.sleep(random.randint(1, 10))
+        else:
+            time.sleep(custom_sleep_time)
 
     return all_pages
 
