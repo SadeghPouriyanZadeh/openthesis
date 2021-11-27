@@ -16,9 +16,13 @@ def ut_thesis_first_page_url(thesis_id):
     return url
 
 
-def fetch_page_data(url):
+def fetch_page_data(thesis_id, url=None):
     headers = {"user_agent": UserAgent().chrome}
-    response = requests.get(url=url, headers=headers)
+    if url is not None:
+        response = requests.get(url=url, headers=headers)
+    else:
+        url = ut_thesis_first_page_url(thesis_id)
+        response = requests.get(url=url, headers=headers)
     content = response.content
     extension = mimetypes.guess_extension(response.headers["content-type"])
     PageData = namedtuple("PageData", ["response", "content", "extension"])
