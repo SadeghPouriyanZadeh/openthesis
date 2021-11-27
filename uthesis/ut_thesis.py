@@ -23,7 +23,7 @@ def find_next_url(url):
     pn_index_finish = url.find("&pc=")
     current_str = url[pn_index_start:pn_index_finish]
     next_str = str(int(url[pn_index_start:pn_index_finish]) + 1)
-    next_url = url[:pn_index_start]+f'{next_str}'+url[pn_index_finish:]
+    next_url = url[:pn_index_start] + f"{next_str}" + url[pn_index_finish:]
     return next_url
 
 
@@ -37,13 +37,14 @@ def fetch_all_pages(url, max_tries=10, sleep_time=10):
             image = Image.open(io.BytesIO(page_data.content))
             all_pages.append(image)
             error_counter = 0
+            url = find_next_url(url)
             print(url)
             print(f"Page {len(all_pages)} is done")
         else:
             error_counter += 1
             print(url)
             print(f"Retrying page {len(all_pages)} ...")
-        url = find_next_url(url)
+
         time.sleep(sleep_time)
 
     return all_pages
