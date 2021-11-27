@@ -1,11 +1,19 @@
 import io
 import mimetypes
+import random
 import time
 from collections import namedtuple
 
 import requests
 from fake_useragent import UserAgent
 from PIL import Image
+
+
+def generate_first_page_url(thesis_id):
+    parent_dir = "https://utdlib.ut.ac.ir/DigitalFiles/PdfPage/"
+    first_page_dir = "?pn=1&pc="
+    url = parent_dir + str(thesis_id) + first_page_dir
+    return url
 
 
 def fetch_page_data(url):
