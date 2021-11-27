@@ -27,7 +27,7 @@ def find_next_url(url):
     return next_url
 
 
-def fetch_all_pages(url, max_tries=10):
+def fetch_all_pages(url, max_tries=10, sleep_time=10):
     all_pages = []
     error_counter = 0
 
@@ -44,7 +44,7 @@ def fetch_all_pages(url, max_tries=10):
             print(url)
             print(f"Retrying page {len(all_pages)} ...")
         url = find_next_url(url)
-        time.sleep(10)
+        time.sleep(sleep_time)
 
     return all_pages
 
