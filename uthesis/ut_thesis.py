@@ -9,7 +9,7 @@ from fake_useragent import UserAgent
 from PIL import Image
 
 
-def generate_first_page_url(thesis_id):
+def ut_thesis_first_page_url(thesis_id):
     parent_dir = "https://utdlib.ut.ac.ir/DigitalFiles/PdfPage/"
     first_page_dir = "?pn=1&pc="
     url = parent_dir + str(thesis_id) + first_page_dir
