@@ -39,12 +39,17 @@ def find_next_url(url):
     return next_url
 
 
-def fetch_all_pages(url, max_tries=10, random_sleep_time=True, custom_sleep_time=10):
+def fetch_all_pages(
+    thesis_id, url=None, max_tries=10, random_sleep_time=True, custom_sleep_time=10
+):
     all_pages = []
     error_counter = 0
 
     while error_counter < max_tries:
-        page_data = fetch_page_data(url=url)
+        if url is not None:
+            page_data = fetch_page_data(url=url)
+        else:
+            page_data = fetch_page_data(thesis_id=thesis_id)
         if page_data.extension is not None:
             image = Image.open(io.BytesIO(page_data.content))
             all_pages.append(image)
