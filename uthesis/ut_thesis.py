@@ -23,7 +23,7 @@ def find_next_url(url):
     pn_index_finish = url.find("&pc=")
     current_str = url[pn_index_start:pn_index_finish]
     next_str = str(int(url[pn_index_start:pn_index_finish]) + 1)
-    next_url = url.replace(current_str, next_str)
+    next_url = url[:pn_index_start]+f'{next_str}'+url[pn_index_finish:]
     return next_url
 
 
