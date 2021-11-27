@@ -16,7 +16,7 @@ def ut_thesis_first_page_url(thesis_id):
     return url
 
 
-def fetch_page_data(thesis_id, url=None):
+def fetch_page_data(thesis_id=None, url=None):
     headers = {"user_agent": UserAgent().chrome}
     if url is not None:
         response = requests.get(url=url, headers=headers)
@@ -40,7 +40,7 @@ def find_next_url(url):
 
 
 def fetch_all_pages(
-    thesis_id, url=None, max_tries=10, random_sleep_time=True, custom_sleep_time=10
+    thesis_id=None, url=None, max_tries=10, random_sleep_time=True, custom_sleep_time=10
 ):
     all_pages = []
     error_counter = 0
@@ -49,13 +49,14 @@ def fetch_all_pages(
         if url is not None:
             page_data = fetch_page_data(url=url)
         else:
-            page_data = fetch_page_data(thesis_id=thesis_id)
+            url = ut_thesis_first_page_url(thesis_id)
+            page_data = fetch_page_data(url=url)
         if page_data.extension is not None:
             image = Image.open(io.BytesIO(page_data.content))
             all_pages.append(image)
             error_counter = 0
-            url = find_next_url(url)
             print(url)
+            url = find_next_url(url)
             print(f"Page {len(all_pages)} is done")
         else:
             error_counter += 1
