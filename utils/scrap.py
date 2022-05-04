@@ -23,12 +23,11 @@ def find_next_url(url):
     return next_url
 
 
-def fetch_page_data(thesis_id):
+def fetch_page_data(thesis_id, url):
     headers = {
         "User-Agent": """Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"""
     }
 
-    url = create_first_url(thesis_id)
     response = requests.get(url=url, headers=headers)
     content = response.content
     extension = mimetypes.guess_extension(response.headers["content-type"])
@@ -38,25 +37,32 @@ def fetch_page_data(thesis_id):
 
 
 def fetch_all_pages(
-    thesis_id, max_tries=10, random_sleep_time=True, custom_sleep_time=10
+    thesis_id,
+    pages_number,
+    custom_sleep_time=None,
+    random_sleep_time=True,
 ):
     all_pages = []
     error_counter = 0
     url = create_first_url(thesis_id)
-    while error_counter < max_tries:
-        page_data = fetch_page_data(thesis_id)
+    i = 0
+    while i < (pages_number - 1):
+        page_data = fetch_page_data(thesis_id, url)
 
         if page_data.extension is not None:
             image = Image.open(io.BytesIO(page_data.content))
             all_pages.append(image)
-            error_counter = 0
             print(url)
-            url = find_next_url(url)
             print(f"Page {len(all_pages)} is done")
+
+            url = find_next_url(url)
+            i += 1
+            print("i =", i)
+            print(f"break = {pages_number - 1}")
         else:
             error_counter += 1
             print(url)
-            print(f"Retrying page {len(all_pages)} ...")
+            print(f"Retrying page {len(all_pages)+1} ...")
 
         if random_sleep_time:
             time.sleep(random.randint(1, 10))
